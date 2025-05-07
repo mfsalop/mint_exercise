@@ -1,0 +1,23 @@
+{
+  "name": "search_mint_exercise",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mfsalop/search_mint_exercise.git"
+  },
+  "author": "Mafe Sanchez",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mfsalop/search_mint_exercise/issues"
+  },
+  "homepage": "https://github.com/mfsalop/search_mint_exercise#readme",
+  "description": "",
+  "dependencies": {
+    "dotenv": "^16.5.0",
+    "selenium-webdriver": "^4.32.0"
+  }
+}
