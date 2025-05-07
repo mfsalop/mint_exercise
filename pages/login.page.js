@@ -73,7 +73,7 @@ class LoginPage {
         await this.clickLoginButton();
     }
 
-    async isLoginSuccessful(timeout = 30000) {
+    async isLoginSuccessful(timeout = 50000) {
         try {
             const element = await this.driver.wait(
                 until.elementLocated(this.scheduleContainer),

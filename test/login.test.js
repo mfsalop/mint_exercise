@@ -7,15 +7,22 @@ async function runTests() {
     let loginPage;
 
     try {
-        // Set up the Selenium WebDriver
-        driver = await new Builder().forBrowser('chrome').build();
+        // Set up the Selenium WebDriver with Chrome options to disable JavaScript
+        const options = new chrome.Options();
+        options.setUserPreferences({
+            'profile.managed_default_content_settings.javascript': 2
+        });
+
+        driver = await new Builder()
+            .forBrowser('chrome')
+            .setChromeOptions(options)
+            .build();
+
         loginPage = new LoginPage(driver);
 
         // Test: Login with valid credentials
-        console.log('Attempting to log in with valid credentials...');
         await loginPage.login(username, password);
         console.log('Login action completed.');
-
         // Check if login was successful
         const success = await loginPage.isLoginSuccessful();
         if (!success) {
@@ -24,7 +31,7 @@ async function runTests() {
         console.log('✅ Login test passed: schedule element is visible.');
         
     } catch (error) {
-        console.error('❌ Test failed:', error.message);
+        console.error('Test failed:', error.message);
     } finally {
         // Always close the browser after tests are done
         if (driver) {

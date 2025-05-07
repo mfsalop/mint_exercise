@@ -1,14 +1,14 @@
-const { until, By } = require('selenium-webdriver');
+const { By, until, Key } = require('selenium-webdriver');
 
 class GlobalSearchPage {
     constructor(driver) {
         this.driver = driver;
 
-        // Locators 
+        // Locators
         this.globalSearchButton = By.css('button[class="top-bar__button aux-search-button"]');
-        this.globalSearchInput = By.css('input[name="search-input"]'); 
-        this.globalSearchClickForSearch = By.css('button[class="search-bar__action search-bar__action--right"]');
-        this.globalSearchTitle = By.css('li.mint-breadcrumb__item.mint-breadcrumb__item--active');
+        this.globalSearchInput = By.css('input[name="search-input"]');
+        this.globalSearchTitle = By.css('li[class="mint-breadcrumb__item mint-breadcrumb__item--active ng-star-inserted"]');
+        this.cellValueSpan = By.css('a[class="ng-star-inserted"]');
     }
 
     // Start global search
@@ -16,34 +16,47 @@ class GlobalSearchPage {
         await this.driver.wait(until.elementLocated(this.globalSearchButton), 10000);
         const button = await this.driver.findElement(this.globalSearchButton);
         await button.click();
-        console.log('✅ Global search button clicked.');
+        console.log('Global search button clicked.');
 
         await this.driver.wait(until.elementLocated(this.globalSearchInput), 10000);
         const input = await this.driver.findElement(this.globalSearchInput);
-
-        await this.driver.wait(until.elementIsVisible(input), 10000);
         await this.driver.wait(until.elementIsEnabled(input), 10000);
-        await this.driver.executeScript("arguments[0].scrollIntoView(true);", input);
-
         await input.clear();
-        await input.sendKeys("Visionary Expo");
+        await input.sendKeys('Visionary Expo');
+        await this.driver.sleep(5000); // Optional: wait for a second to simulate user typing
+        await input.sendKeys(Key.ENTER);
 
-        console.log('✅ Entered search term: Visionary Expo');
+        console.log('Entered search term: Visionary Expo and pressed Enter');
     }
 
-    // ✅ Click search button and confirm result
-    async clickSearchAndVerifyResult() {
-        await this.driver.wait(until.elementLocated(this.globalSearchClickForSearch), 10000);
-        const searchButton = await this.driver.findElement(this.globalSearchClickForSearch);
-        await searchButton.click();
-        console.log('✅ Search button clicked.');
-
-        await this.driver.wait(until.elementLocated(this.globalSearchTitle), 10000);
+    // Verify result
+    async verifyResult() {
+        // Wait for the title to be visible
+        await this.driver.sleep(5000);
+        await this.driver.wait(until.elementLocated(this.globalSearchTitle), 30000);
         const title = await this.driver.findElement(this.globalSearchTitle);
-        const text = await title.getText();
-        console.log('🔎 Search result title:', text);
+        const titleText = await title.getText();
+        console.log('Search result title:', titleText);
 
-        return text.includes("Visionary Expo");
+        // Verify if the title includes "Global Search"
+        const isTitleCorrect = titleText.includes("Global Search");
+        if (!isTitleCorrect) {
+            console.error('Title does not contain "Global Search".');
+        }
+
+        // Wait for the cell value to become visible
+        await this.driver.wait(until.elementLocated(this.cellValueSpan), 10000);
+        const cellValueElement = await this.driver.findElement(this.cellValueSpan);
+        const cellValueText = await cellValueElement.getText();
+        console.log('Cell value:', cellValueText);
+
+        // Verify if the cell value matches "Visionary Expo"
+        const isCellValueCorrect = cellValueText.trim().toLowerCase() === "visionary expo".toLowerCase();
+        if (!isCellValueCorrect) {
+            console.error('Cell value does not match "Visionary Expo".');
+        }
+
+        return isTitleCorrect && isCellValueCorrect;
     }
 }
 

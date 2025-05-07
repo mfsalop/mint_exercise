@@ -1,4 +1,5 @@
 const { Builder } = require('selenium-webdriver');
+const chrome = require('selenium-webdriver/chrome');
 const LoginPage = require('../pages/login.page');
 const GlobalSearchPage = require('../pages/globalSearch.page');
 const { username, password } = require('../config/credentials');
@@ -7,11 +8,19 @@ async function runTest() {
     let driver;
 
     try {
-        driver = await new Builder().forBrowser('chrome').build();
+        // Set Chrome options to disable password manager
+        const options = new chrome.Options();
+        options.addArguments('--incognito');
+
+        driver = await new Builder()
+            .forBrowser('chrome')
+            .setChromeOptions(options)
+            .build();
+
+        const loginPage = new LoginPage(driver);
 
         // Precondition: Login
-        const loginPage = new LoginPage(driver);
-        console.log('Portal User is logs in');
+        console.log('Portal User is logging in');
         await loginPage.login(username, password);
 
         const loggedIn = await loginPage.isLoginSuccessful();
@@ -20,11 +29,11 @@ async function runTest() {
         }
         console.log('Login successful.');
 
-        // Global Search Test : Search for project "Visionary Expo"
+        // Global Search Test: Search for project "Visionary Expo"
         const globalSearchPage = new GlobalSearchPage(driver);
         console.log('Global search test started.');
         await globalSearchPage.openGlobalSearch();
-        await globalSearchPage.clickSearchAndVerifyResult();
+        await globalSearchPage.verifyResult();
 
         console.log('Global search completed.');
 
