@@ -1,4 +1,5 @@
 const { Builder } = require('selenium-webdriver');
+const chrome = require('selenium-webdriver/chrome');
 const LoginPage = require('../pages/login.page');
 const { username, password } = require('../config/credentials');
 
