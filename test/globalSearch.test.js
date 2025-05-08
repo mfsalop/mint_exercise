@@ -34,12 +34,11 @@ async function runTest() {
         await globalSearchPage.openGlobalSearch();
         await globalSearchPage.clickFilterButton();
         //await driver.sleep(5000); // Wait to see the filter dropdown results (use to review test automation)
-        // Type the search term "Visionary Expo"
+        // Type the search term "Visionary Expo" and press Enter
         await globalSearchPage.enterSearchTerm('Visionary Expo');
         // Wait for the search results to load
         //await driver.sleep(5000); // Adjust this sleep time as needed (use to review test automation)
-        // Verify the search results
-        await globalSearchPage.getTableResults(driver);
+        await globalSearchPage.verifyResult(driver);
         //await globalSearchPage.verifyResult();
         console.log('Global search completed.');
 

@@ -48,70 +48,41 @@ class GlobalSearchPage {
         console.log('Search term submitted.');
     }
 
-    /*
-    // Verify result
     async verifyResult() {
-        // Wait for the title to be visible
         await this.driver.sleep(5000);
-        await this.driver.wait(until.elementLocated(this.globalSearchTitle), 1000);
-        const title = await this.driver.findElement(this.globalSearchTitle);
-        const titleText = await title.getText();
-        console.log('Search result title:', titleText);
-
-        // Verify if the title includes "Global Search"
-        const isTitleCorrect = titleText.includes("Global Search");
-        if (!isTitleCorrect) {
-            console.error('Title does not contain "Global Search".');
+    // Wait for the search results to load
+        const container = await this.driver.wait(
+            until.elementLocated(this.resultContainer),
+            5000
+        );
+        console.log('Table body container found.');
+    // Wait for the cell value spans to be present
+        const valueSpans = await container.findElements(this.cellValueSpan);
+    // Check if any cell value spans are found
+        if (valueSpans.length === 0) {
+            console.log('No values found.');
+            return false;
         }
-
-        // Wait for the cell value to become visible
-        await this.driver.wait(until.elementLocated(this.cellValueSpan), 1000);
-        const cellValueElement = await this.driver.findElement(this.cellValueSpan);
-        const cellValueText = await cellValueElement.getText();
-        console.log('Cell value:', cellValueText);
-
-        // Verify if the cell value matches "Visionary Expo"
-        const isCellValueCorrect = cellValueText.trim().toLowerCase() === "visionary Expo".toLowerCase();
+    // Log the text of each cell value span
+        const values = [];
+        for (const span of valueSpans) {
+            const text = await span.getText();
+            values.push(text);
+        }
+        console.log(JSON.stringify(values, null, 2));
+    
+        // ✅ Verify if any value matches "Visionary Expo" (case-insensitive)
+        const isCellValueCorrect = values.some(
+            (text) => text.trim().toLowerCase() === "visionary expo".toLowerCase()
+        );
+    
         if (!isCellValueCorrect) {
-            console.error('❌ Test Failed: Cell value does not match "Visionary Expo".');
-        }
-
-        return isTitleCorrect && isCellValueCorrect;
-        console.log('✅ Test Passed: Cell value matches "Visionary Expo".');
-    } */
-   
-    // Get table resources
-    async getTableResults(driver) {
-        // Wait until at least one row is visible
-        await driver.wait(until.elementLocated(By.css('.ag-center-cols-container [role="row"]')), 5000);
-    
-        // Now get all visible rows
-        const rows = await driver.findElements(By.css('.ag-center-cols-container [role="row"]'));
-    
-        const tableData = [];
-    
-        for (const row of rows) {
-            const rowData = {};
-            const cells = await row.findElements(By.css('[role="gridcell"]'));
-    
-            for (const cell of cells) {
-                const colId = await cell.getAttribute('col-id') || 'unknown';
-    
-                let text = '';
-                try {
-                    const link = await cell.findElement(By.css('a'));
-                    text = await link.getText();
-                } catch (e) {
-                    text = await cell.getText();
-                }
-    
-                rowData[colId] = text.trim();
-            }
-    
-            tableData.push(rowData);
+            console.error('❌ Test Failed: No cell value matches "Visionary Expo".');
+        } else {
+            console.log('✅ Test Passed: At least one cell value matches "Visionary Expo".');
         }
     
-        return tableData;
+        return isCellValueCorrect;
     }
 }
 
