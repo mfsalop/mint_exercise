@@ -1,74 +1,84 @@
-# Automation Framework Explanation
-Git repository: https://github.com/mfsalop/mint_exercise.git 
+# 🚀 Automation Framework – Mint Exercise
 
-## Create a project folder
-Create a folder for your project in the desired location on your computer.
+🔗 GitHub Repository: mint_exercise
 
-## Initialize the project
-In the Visual Studio Code terminal, run. This will generate a package.json file:
-npm init
+This project demonstrates a lightweight and modular Selenium WebDriver automation framework using JavaScript. The design follows the Page Object Model (POM) and leverages environment configuration for clean, scalable testing.
 
-## Install Selenium WebDriver
-This will create a package-lock.json file and a node_modules folder: 
-In the terminal, run:
+## 📁 Project Setup
+
+1. Create a Project Folder
+Open your terminal and create a new directory:
+
+mkdir search_mint_exercise && cd search_mint_exercise
+2. Initialize the Project
+Start your Node.js project by running:
+
+npm init -y
+This creates a package.json file.
+
+3. Install Selenium WebDriver
+Add Selenium WebDriver as a dependency:
+
 npm install selenium-webdriver
+This will also generate a package-lock.json and a node_modules/ folder.
 
-## Create your Project structure
-Create the following folder and file structure:
+## 📂 Folder Structure
+
+Organize your framework as follows:
+
 search_mint_exercise/
-config/
-credentials.js
-env.js
-pageObjects/
-login.page.js
-  		globalSearch.page.js
-test/
-   		login.test.js
-   		globalSearch.test.js
-	.env
-package.json
+│
+├── config/
+│   ├── credentials.js
+│   └── env.js
+│
+├── pageObjects/
+│   ├── login.page.js
+│   └── globalSearch.page.js
+│
+├── test/
+│   ├── login.test.js
+│   └── globalSearch.test.js
+│
+├── .env
+└── package.json
 
-## Create a .env file
-In the root directory of your project, create a .env file and add the following environment variables:
-.env files
+## 🔐 Environment Configuration
+
+4. Create a .env File
+In the root of your project, add:
 
 BASE_URL=
 TEST_USERNAME=
 TEST_PASSWORD=
+Replace the values with your actual credentials.
 
-Replace the values with your actual test environment credentials.
+5. Install dotenv
+To enable loading of environment variables:
 
-## Install dotenv
-Run the following command in the terminal to install the dotenv package:
 npm install dotenv
 
-## Configure environment files
-Update your config files to access the environment variables:
+## ⚙️ Configure Environment Files
 
-### credentials.js
-
+config/credentials.js
 require('dotenv').config();
 
 module.exports = {
-username: process.env.TEST_USERNAME,
-password: process.env.TEST_PASSWORD
+  username: process.env.TEST_USERNAME,
+  password: process.env.TEST_PASSWORD
 };
-
-env.js
-
+config/env.js
 require('dotenv').config();
 
 module.exports = {
-baseUrl: process.env.BASE_URL
+  baseUrl: process.env.BASE_URL
 };
 
-## Creating Page Object Model (POM) Files
-Create Page Object Model (POM) files for each relevant page in your application. These files should contain:
-Locators for all the necessary elements.
-Methods for all interactions (e.g., click, input, wait).
-This helps keep your test code clean and reusable by abstracting UI interactions.
+## 🧱 Page Object Model (POM)
 
-### login.page.js
+Page objects abstract UI logic, improving reusability and maintainability.
+
+pageObjects/login.page.js
 const { By } = require('selenium-webdriver');
 
 class LoginPage {
@@ -88,29 +98,30 @@ class LoginPage {
 
 module.exports = LoginPage;
 
-You will then import and use these page objects in your test files to maintain modular and maintainable test scripts.
+✅ Writing Test Cases
 
-## Create your tests cases
-
-### login.test.js
+test/login.test.js
 const { Builder } = require('selenium-webdriver');
 const LoginPage = require('../pageObjects/login.page');
 const credentials = require('../config/credentials');
 const env = require('../config/env');
 
 (async function loginTest() {
-  // Initialize the browser (Chrome in this case)
   let driver = await new Builder().forBrowser('chrome').build();
 
   try {
-    // Navigate to the login page
     await driver.get(env.baseUrl);
-
-    // Initialize the LoginPage with the driver
     const loginPage = new LoginPage(driver);
-      } finally {
-    await driver.quit(); // Close the browser
+    await loginPage.login(credentials.username, credentials.password);
+    // Add assertions here if needed
+  } finally {
+    await driver.quit();
   }
 })();
 
-This framework leverages Selenium WebDriver and JavaScript to automate tests.
+
+### 💡 Key Features
+### 🧩 Modular architecture (POM)
+### 🔐 Secure config management via .env
+### 💻 Lightweight JS + Selenium WebDriver stack
+### ♻️ Scalable structure for future test growth
