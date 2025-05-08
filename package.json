@@ -3,8 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "test:mocha:report": "mochawesome-merge mochawesome-report/*.json -o mochawesome-report/report.json && marge mochawesome-report/report.json --reportDir mochawesome-report"
+    "test": "mocha -R allure-mocha -O resultsDir=allure-results"
   },
   "repository": {
     "type": "git",
@@ -22,5 +21,8 @@
     "selenium-webdriver": "^4.32.0"
   },
   "devDependencies": {
+    "allure-commandline": "^2.34.0",
+    "allure-mocha": "^3.2.1",
+    "mocha": "^11.2.2"
   }
 }
