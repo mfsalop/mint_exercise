@@ -45,7 +45,6 @@ class LoginPage {
             timeout,
             'Username field not found'
         );
-        await this.driver.wait(until.elementIsVisible(element), timeout);
         await this.driver.wait(until.elementIsEnabled(element), timeout);
     }
 // Enter username

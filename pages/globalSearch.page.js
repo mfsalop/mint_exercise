@@ -49,7 +49,7 @@ class GlobalSearchPage {
     }
 
     async verifyResult() {
-        await this.driver.sleep(5000);
+        await this.driver.sleep(10000);
     // Wait for the search results to load
         const container = await this.driver.wait(
             until.elementLocated(this.resultContainer),

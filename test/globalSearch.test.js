@@ -3,6 +3,7 @@ const chrome = require('selenium-webdriver/chrome');
 const LoginPage = require('../pages/login.page');
 const GlobalSearchPage = require('../pages/globalSearch.page');
 const { username, password } = require('../config/credentials');
+const searchTerm = "Visionary Expo"
 
 async function runTest() {
     let driver;
@@ -35,7 +36,7 @@ async function runTest() {
         await globalSearchPage.clickFilterButton();
         //await driver.sleep(5000); // Wait to see the filter dropdown results (use to review test automation)
         // Type the search term "Visionary Expo" and press Enter
-        await globalSearchPage.enterSearchTerm('Visionary Expo');
+        await globalSearchPage.enterSearchTerm(searchTerm);
         // Wait for the search results to load
         //await driver.sleep(5000); // Adjust this sleep time as needed (use to review test automation)
         await globalSearchPage.verifyResult(driver);
