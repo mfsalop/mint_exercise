@@ -8,7 +8,7 @@ async function runTest() {
     let driver;
 
     try {
-        // Set Chrome options to disable password manager
+        // Set Chrome as Cognito
         const options = new chrome.Options();
         options.addArguments('--incognito');
 
@@ -22,7 +22,6 @@ async function runTest() {
         // Precondition: Login
         console.log('Portal User is logging in');
         await loginPage.login(username, password);
-
         const loggedIn = await loginPage.isLoginSuccessful();
         if (!loggedIn) {
             throw new Error('Login failed: schedule element not visible.');

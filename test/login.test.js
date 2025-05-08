@@ -7,11 +7,10 @@ async function runTests() {
     let loginPage;
 
     try {
-        // Set up the Selenium WebDriver with Chrome options to disable JavaScript
+        // Set Chrome as Cognito
         const options = new chrome.Options();
-        options.setUserPreferences({
-            'profile.managed_default_content_settings.javascript': 2
-        });
+        options.addArguments('--incognito');
+        
 
         driver = await new Builder()
             .forBrowser('chrome')
@@ -20,15 +19,15 @@ async function runTests() {
 
         loginPage = new LoginPage(driver);
 
-        // Test: Login with valid credentials
+        // Test: Login with portal user credentials
         await loginPage.login(username, password);
         console.log('Login action completed.');
-        // Check if login was successful
+        // Check if login was successful by verifying the presence of the schedule container
         const success = await loginPage.isLoginSuccessful();
         if (!success) {
             throw new Error('Login failed: schedule element not visible.');
         }
-        console.log('✅ Login test passed: schedule element is visible.');
+        console.log('Login test passed: schedule element is visible.');
         
     } catch (error) {
         console.error('Test failed:', error.message);
