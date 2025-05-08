@@ -24,19 +24,16 @@ This will also generate a package-lock.json and a node_modules/ folder.
 Organize your framework as follows:
 
 search_mint_exercise/
-│
+
 ├── config/
 │   ├── credentials.js
-│   └── env.js
-│
+│   └── env.js│
 ├── pageObjects/
 │   ├── login.page.js
 │   └── globalSearch.page.js
-│
 ├── test/
 │   ├── login.test.js
 │   └── globalSearch.test.js
-│
 ├── .env
 └── package.json
 
