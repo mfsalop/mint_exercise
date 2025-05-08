@@ -9,16 +9,13 @@ This project demonstrates a lightweight and modular Selenium WebDriver automatio
 1. Create a Project Folder
 Open your terminal and create a new directory:
 
-mkdir search_mint_exercise && cd search_mint_exercise
 2. Initialize the Project
 Start your Node.js project by running:
-
 npm init -y
 This creates a package.json file.
 
 3. Install Selenium WebDriver
 Add Selenium WebDriver as a dependency:
-
 npm install selenium-webdriver
 This will also generate a package-lock.json and a node_modules/ folder.
 
@@ -98,7 +95,7 @@ class LoginPage {
 
 module.exports = LoginPage;
 
-✅ Writing Test Cases
+## ✅ Writing Test Cases
 
 test/login.test.js
 const { Builder } = require('selenium-webdriver');
