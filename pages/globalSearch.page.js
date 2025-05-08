@@ -23,7 +23,7 @@ class GlobalSearchPage {
         await this.driver.wait(until.elementIsEnabled(input), 10000);
         await input.clear();
         await input.sendKeys('Visionary Expo');
-        await this.driver.sleep(5000); // Optional: wait for a second to simulate user typing
+        await this.driver.sleep(5000); // Wait to ensure the input is ready
         await input.sendKeys(Key.ENTER);
 
         console.log('Entered search term: Visionary Expo and pressed Enter');

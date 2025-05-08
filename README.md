@@ -5,12 +5,13 @@ Git repository: https://github.com/mfsalop/mint_exercise.git
 Create a folder for your project in the desired location on your computer.
 
 ## Initialize the project
-#In the Visual Studio Code terminal, run. This will generate a package.json file:
-```npm init
+In the Visual Studio Code terminal, run. This will generate a package.json file:
+npm init
 
-## Install Selenium WebDriver, this will create a package-lock.json file and a node_modules folder: 
+## Install Selenium WebDriver
+This will create a package-lock.json file and a node_modules folder: 
 In the terminal, run:
-```npm install selenium-webdriver
+npm install selenium-webdriver
 
 ## Create your Project structure
 Create the following folder and file structure:
@@ -31,7 +32,7 @@ package.json
 In the root directory of your project, create a .env file and add the following environment variables:
 .env files
 
-```BASE_URL=
+BASE_URL=
 TEST_USERNAME=
 TEST_PASSWORD=
 
@@ -39,13 +40,14 @@ Replace the values with your actual test environment credentials.
 
 ## Install dotenv
 Run the following command in the terminal to install the dotenv package:
-```npm install dotenv
+npm install dotenv
 
 ## Configure environment files
 Update your config files to access the environment variables:
-credentials.js
 
-```require('dotenv').config();
+### credentials.js
+
+require('dotenv').config();
 
 module.exports = {
 username: process.env.TEST_USERNAME,
@@ -54,7 +56,7 @@ password: process.env.TEST_PASSWORD
 
 env.js
 
-```require('dotenv').config();
+require('dotenv').config();
 
 module.exports = {
 baseUrl: process.env.BASE_URL
@@ -66,8 +68,8 @@ Locators for all the necessary elements.
 Methods for all interactions (e.g., click, input, wait).
 This helps keep your test code clean and reusable by abstracting UI interactions.
 
-login.page.js
-```const { By } = require('selenium-webdriver');
+### login.page.js
+const { By } = require('selenium-webdriver');
 
 class LoginPage {
   constructor(driver) {
@@ -89,7 +91,9 @@ module.exports = LoginPage;
 You will then import and use these page objects in your test files to maintain modular and maintainable test scripts.
 
 ## Create your tests cases
-```const { Builder } = require('selenium-webdriver');
+
+### login.test.js
+const { Builder } = require('selenium-webdriver');
 const LoginPage = require('../pageObjects/login.page');
 const credentials = require('../config/credentials');
 const env = require('../config/env');

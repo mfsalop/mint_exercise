@@ -9,7 +9,7 @@ class LoginPage {
         this.driver = driver;
         this.baseUrl = baseUrl;
 
-        // Locators (using By)
+        // Locators 
         this.usernameField = By.css('input#username');
         this.passwordField = By.css('input#password');
         this.signInButton = By.css('button[type="submit"]');
@@ -24,6 +24,7 @@ class LoginPage {
         await this.handleModal();
     }
 
+    //Handle login modal (Wait and close if present)
     async handleModal(timeout = 30000) {
         try {
             await this.driver.wait(until.elementLocated(this.modalLogin), timeout);
@@ -37,7 +38,7 @@ class LoginPage {
             console.log('No modal found or already handled.');
         }
     }
-
+    //Wait for username field to be present and enabled
     async waitForUsernameField(timeout = 10000) {
         const element = await this.driver.wait(
             until.elementLocated(this.usernameField),
@@ -47,32 +48,32 @@ class LoginPage {
         await this.driver.wait(until.elementIsVisible(element), timeout);
         await this.driver.wait(until.elementIsEnabled(element), timeout);
     }
-
+// Enter username
     async enterUsername(uname = username) {
         await this.waitForUsernameField();
         const usernameElement = await this.driver.findElement(this.usernameField);
         await usernameElement.clear();
         await usernameElement.sendKeys(uname);
     }
-
+// Enter password
     async enterPassword(pwd = password) {
         const passwordElement = await this.driver.findElement(this.passwordField);
         await passwordElement.clear();
         await passwordElement.sendKeys(pwd);
     }
-
+// Click login button
     async clickLoginButton() {
         const loginButtonElement = await this.driver.findElement(this.signInButton);
         await loginButtonElement.click();
     }
-
+// Login function
     async login(uname = username, pwd = password) {
         await this.open();
         await this.enterUsername(uname);
         await this.enterPassword(pwd);
         await this.clickLoginButton();
     }
-
+//Login confirmation
     async isLoginSuccessful(timeout = 50000) {
         try {
             const element = await this.driver.wait(
