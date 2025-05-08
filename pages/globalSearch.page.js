@@ -11,6 +11,7 @@ class GlobalSearchPage {
         this.globalSearchFilter = By.css('div[class="search-bar__filter ng-star-inserted"]');
         this.filterByProjectOption = By.xpath('(//mint-checkbox)[2]');
         this.cellValueSpan = By.css('a[class="ng-star-inserted"]');
+        this.resultContainer = By.css('div[class="ag-center-cols-container"]');
     }
 
     // Start global search
@@ -44,8 +45,10 @@ class GlobalSearchPage {
         await input.sendKeys(searchTerm);
         console.log(`Entered search term: ${searchTerm}`);
         await input.sendKeys(Key.ENTER);
+        console.log('Search term submitted.');
     }
 
+    /*
     // Verify result
     async verifyResult() {
         // Wait for the title to be visible
@@ -68,12 +71,47 @@ class GlobalSearchPage {
         console.log('Cell value:', cellValueText);
 
         // Verify if the cell value matches "Visionary Expo"
-        const isCellValueCorrect = cellValueText.trim().toLowerCase() === "visionary expo".toLowerCase();
+        const isCellValueCorrect = cellValueText.trim().toLowerCase() === "visionary Expo".toLowerCase();
         if (!isCellValueCorrect) {
-            console.error('Cell value does not match "Visionary Expo".');
+            console.error('❌ Test Failed: Cell value does not match "Visionary Expo".');
         }
 
         return isTitleCorrect && isCellValueCorrect;
+        console.log('✅ Test Passed: Cell value matches "Visionary Expo".');
+    } */
+   
+    // Get table resources
+    async getTableResults(driver) {
+        // Wait until at least one row is visible
+        await driver.wait(until.elementLocated(By.css('.ag-center-cols-container [role="row"]')), 5000);
+    
+        // Now get all visible rows
+        const rows = await driver.findElements(By.css('.ag-center-cols-container [role="row"]'));
+    
+        const tableData = [];
+    
+        for (const row of rows) {
+            const rowData = {};
+            const cells = await row.findElements(By.css('[role="gridcell"]'));
+    
+            for (const cell of cells) {
+                const colId = await cell.getAttribute('col-id') || 'unknown';
+    
+                let text = '';
+                try {
+                    const link = await cell.findElement(By.css('a'));
+                    text = await link.getText();
+                } catch (e) {
+                    text = await cell.getText();
+                }
+    
+                rowData[colId] = text.trim();
+            }
+    
+            tableData.push(rowData);
+        }
+    
+        return tableData;
     }
 }
 
